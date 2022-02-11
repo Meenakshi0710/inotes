@@ -14,6 +14,7 @@ router.post('/createuser',[ body('name','Enter a valid name').isLength({ min: 3 
                     body('email','Enter a valid email').isEmail(),
                     body('password','Password must be atleast 5 characters').isLength({ min: 5 }),
                     ], async function (req, res) {
+                      let  Success = false;
                       //if there are errors send bad request and show the errors
                         const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -46,7 +47,9 @@ router.post('/createuser',[ body('name','Enter a valid name').isLength({ min: 3 
         }
       }
       const authToken = jwt.sign(data, JWT_SECRET)
-      res.json({authToken})
+    Success = true;
+
+      res.json({Success,authToken})
       
     } catch(error){
       console.error(error.message);
@@ -60,6 +63,7 @@ router.post('/createuser',[ body('name','Enter a valid name').isLength({ min: 3 
 router.post('/login',[body('email','Enter a valid email').isEmail(),
                           body('password','password cannot be empty').exists(),
                     ], async function (req, res) {
+                      let Success = false;
                       //if there are errors send bad request and show the errors
                         const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -79,7 +83,8 @@ router.post('/login',[body('email','Enter a valid email').isEmail(),
      let passwordCompare = await bcrypt.compare(password,user.password);
      console.log(passwordCompare);
      if(!passwordCompare){
-      return res.status(400).json({ errors: "please try to login with correct credentials"});
+       Success = false;
+      return res.status(400).json({ Success,errors: "please try to login with correct credentials"});
      }
 
      const data = {
@@ -89,7 +94,8 @@ router.post('/login',[body('email','Enter a valid email').isEmail(),
       }
     }
     const authToken = jwt.sign(data, JWT_SECRET)
-    res.json({authToken})
+    Success = true;
+    res.json({Success,authToken})
     } catch (error) {
       console.error(error.message);
       res.status(500).send("some error occured")
