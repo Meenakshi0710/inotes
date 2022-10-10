@@ -22,7 +22,7 @@ const notesSchema = new Schema({
     },
     date : {
         type : Date,
-        default : Date.nowM
+        default : Date.now
     }
   });
 
