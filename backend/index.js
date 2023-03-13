@@ -2,12 +2,15 @@ const connectToMongo = require("./db");
 var cors = require('cors')
 
 const express = require('express');
-const { application } = require("express");
+
 const path = require("path");
 
+const PORT = 5000
+
 connectToMongo();
+
+
 const app = express()
-const port = 5000
 
 //Availaible routes
 app.use(express.json());
@@ -20,6 +23,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../build/index.html"));
 });
 
-app.listen(port, () => {
-  console.log(`iNotes backend listening at http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`iNotes backend listening at http://localhost:${PORT}`)
 })
