@@ -5,7 +5,7 @@ const express = require('express');
 
 const path = require("path");
 
-const PORT = 4000
+const PORT = 5000
 
 connectToMongo();
 
